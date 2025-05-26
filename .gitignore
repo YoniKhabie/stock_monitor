@@ -1,0 +1,33 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.vscode/
+.idea/
+
+# Environment files
+.env
+.venv/
+env/
+venv/
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Backup files
+main_2.py
+main_3.py
+*.bak
+
+# Finnhub API folder
+finnhub/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+*.egg-info/
