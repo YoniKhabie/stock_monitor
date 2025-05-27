@@ -8,8 +8,10 @@ import plotly.graph_objects as go
 import streamlit as st
 import yfinance as yf
 
-# Cache the stock data to prevent unnecessary reloads
+from indicators import bollinger, sma
+
 TIMER = 900 # Need to be 900
+# Cache the stock data to prevent unnecessary reloads
 @st.cache_data(ttl=TIMER)  # 15 minutes in seconds
 def get_stock_data(ticker):
     stock = Stock(ticker)
@@ -19,21 +21,20 @@ def get_stock_data(ticker):
 class Stock:
     def __init__(self, ticker):
         self.ticker = ticker
-        self.df_daily = yf.download(ticker, interval="1d", period="6mo", auto_adjust=True)
-        self.df_inner_daily = yf.download(ticker, interval="30m", period="21d", auto_adjust=True)
+        self.df_daily = yf.download(ticker, interval="1d", period="1y", auto_adjust=True)
+        self.df_inner_daily = yf.download(ticker, interval="30m", period="1mo", auto_adjust=True)
 
         for df in [self.df_daily, self.df_inner_daily]:
-            Stock.add_sma(df, 6)
-            Stock.add_sma(df, 50)
-            Stock.add_sma(df, 200)
+            sma(df, 6)
+            sma(df, 50)
+            sma(df, 200)
+            bollinger(df, window=20)
+
             df.reset_index(inplace=True)
         
         self.df_inner_daily = self.df_inner_daily.rename(columns={"Datetime": "Date"})
 
-    @staticmethod
-    def add_sma(dataframe: pd.DataFrame, num_periods: int):
-        col_name = f"SMA{num_periods}"
-        dataframe[col_name] = dataframe["Close"].rolling(window=num_periods).mean()
+
 
 def plot_stock_chart(df: pd.DataFrame, title: str):
     fig = go.Figure()
@@ -54,6 +55,19 @@ def plot_stock_chart(df: pd.DataFrame, title: str):
                 mode="lines", name=sma_col,
                 line=dict(color=color, dash="dot")
             ))
+
+    if "Support" in df.columns:
+        fig.add_trace(go.Scatter(
+            x=df["Date"], y=df["Support"],
+            mode="lines", name="Support",
+            line=dict(color="orange", dash="dash")
+        ))
+    if "Resistance" in df.columns:
+        fig.add_trace(go.Scatter(
+            x=df["Date"], y=df["Resistance"],
+            mode="lines", name="Resistance",
+            line=dict(color="purple", dash="dash")
+        ))
 
     fig.update_layout(
         title=title,
@@ -109,7 +123,6 @@ while True:
     status_placeholder.write(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Wait 15 minutes before next update
-    
     time_module.sleep(TIMER)
 
 
