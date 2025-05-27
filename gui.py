@@ -1,4 +1,4 @@
-# RUN COMMAND: python -m streamlit run main.py
+# RUN COMMAND: python -m streamlit run gui.py
 
 import time as time_module
 from datetime import datetime
@@ -6,34 +6,14 @@ from datetime import datetime
 import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
-import yfinance as yf
 
-from indicators import bollinger, sma
+from stock import Stock
 
 TIMER = 900 # Need to be 900
-# Cache the stock data to prevent unnecessary reloads
-@st.cache_data(ttl=TIMER)  # 15 minutes in seconds
+
 def get_stock_data(ticker):
     stock = Stock(ticker)
     return stock
-
-
-class Stock:
-    def __init__(self, ticker):
-        self.ticker = ticker
-        self.df_daily = yf.download(ticker, interval="1d", period="1y", auto_adjust=True)
-        self.df_inner_daily = yf.download(ticker, interval="30m", period="1mo", auto_adjust=True)
-
-        for df in [self.df_daily, self.df_inner_daily]:
-            sma(df, 6)
-            sma(df, 50)
-            sma(df, 200)
-            bollinger(df, window=20)
-
-            df.reset_index(inplace=True)
-        
-        self.df_inner_daily = self.df_inner_daily.rename(columns={"Datetime": "Date"})
-
 
 
 def plot_stock_chart(df: pd.DataFrame, title: str):
