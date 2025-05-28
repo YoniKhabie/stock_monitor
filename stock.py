@@ -70,8 +70,12 @@ class Stock:
     
 ticker = "SPY"
 stock = Stock(ticker)
-data = stock.fetch_stock().head()
-print(data)
+last_price = f"{stock.last_completed_price().iloc[-1]:.2f}"
+
 if stock.cross_check() == "1":
-    message = f"Last {ticker} Price is {data['Close'][ticker][0]:.2f}"
+    message = f"Found golden cross {ticker} Price is {last_price}"
+    asyncio.run(send_message_to_group(message))
+
+if stock.cross_check() == "-1":
+    message = f"Found death cross {ticker} Price is {last_price}"
     asyncio.run(send_message_to_group(message))
