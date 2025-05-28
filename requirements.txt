@@ -2,3 +2,5 @@ yfinance==0.2.61
 pandas==2.0.2
 pandas-datareader==0.10.0
 numpy==1.24.3
+python-telegram-bot==22.1
+python-dotenv==1.1.0
