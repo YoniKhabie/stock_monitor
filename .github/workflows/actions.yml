@@ -2,7 +2,7 @@ name: run stock.py
 
 on:
   schedule:
-    - cron: '*/15 13-20 * * 1-5' # every 15 mins from 9am to 4pm ET (13-20 UTC), Mon–Fri
+    - cron: '0,15,30,45 13-20 * * 1-5'
   workflow_dispatch:
 
 jobs:
