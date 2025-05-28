@@ -3,6 +3,7 @@ name: run stock.py
 on:
   schedule:
     - cron: '*/15 13-20 * * 1-5' # every 15 mins from 9am to 4pm ET (13-20 UTC), Mon–Fri
+  workflow_dispatch:
 
 jobs:
   build:
