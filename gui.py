@@ -20,10 +20,10 @@ def plot_stock_chart(df: pd.DataFrame, title: str):
     fig = go.Figure()
     fig.add_trace(go.Candlestick(
         x=df["Date"],
-        open=df["Open"][ticker],
-        high=df["High"][ticker],
-        low=df["Low"][ticker],
-        close=df["Close"][ticker],
+        open=df["Open"],
+        high=df["High"],
+        low=df["Low"],
+        close=df["Close"],
         name="Candlestick"
     ))
 
@@ -35,19 +35,38 @@ def plot_stock_chart(df: pd.DataFrame, title: str):
                 mode="lines", name=sma_col,
                 line=dict(color=color, dash="dot")
             ))
-
-    if "Support" in df.columns:
-        fig.add_trace(go.Scatter(
-            x=df["Date"], y=df["Support"],
-            mode="lines", name="Support",
-            line=dict(color="orange", dash="dash")
-        ))
-    if "Resistance" in df.columns:
-        fig.add_trace(go.Scatter(
-            x=df["Date"], y=df["Resistance"],
-            mode="lines", name="Resistance",
-            line=dict(color="purple", dash="dash")
-        ))
+        
+    # Get unique support and resistance levels
+    support_levels = df[df['Support'].notna()]['Support'].unique()
+    resistance_levels = df[df['Resistance'].notna()]['Resistance'].unique()
+    
+    # Add continuous support levels
+    for level in support_levels:
+        fig.add_hline(
+            y=level,
+            line_dash="dash",
+            line_color="green",
+            opacity=0.25,
+            annotation_text=f"Support {level:.2f}",
+            annotation_position="top right",
+            annotation_font_color="green",
+            annotation_bgcolor="rgba(0,0,0,0)",
+            annotation_opacity=0.7
+        )
+    
+    # Add continuous resistance levels
+    for level in resistance_levels:
+        fig.add_hline(
+            y=level,
+            line_dash="dash",
+            line_color="red",
+            opacity=0.25,
+            annotation_text=f"Resistance {level:.2f}",
+            annotation_position="bottom right",
+            annotation_font_color="red",
+            annotation_bgcolor="rgba(0,0,0,0)",
+            annotation_opacity=0.7
+        )
 
     fig.update_layout(
         title=title,

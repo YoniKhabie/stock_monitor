@@ -6,7 +6,7 @@ import time
 
 import yfinance as yf
 
-from indicators import bollinger, sma
+from indicators import add_resistance, add_support, bollinger, sma
 from telegram_bot import send_message_to_group
 
 
@@ -16,24 +16,34 @@ class Stock:
         self.lock = threading.Lock()
         self.fetch_stock()
 
+    ###### private methods ######
+
     def __add_indecators(self):
         for df in [self.df_daily, self.df_inner_daily]:
             sma(df, 6)
             sma(df, 50)
             sma(df, 200)
-            bollinger(df, window=20)
-
             df.reset_index(inplace=True)
+            add_support(df)
+            add_resistance(df)
+
+    ###### public methods ######
 
     def fetch_stock(self):
         self.df_daily = yf.download(self.ticker, interval="1d", period="1y", auto_adjust=True)
         self.df_inner_daily = yf.download(self.ticker, interval="30m", period="1mo", auto_adjust=True)
+
+        # fixing cols
+        self.df_daily.columns = self.df_daily.columns.droplevel(1)
+        self.df_inner_daily.columns = self.df_inner_daily.columns.droplevel(1)
+
+        # adding indicators
         self.__add_indecators()
         self.df_inner_daily = self.df_inner_daily.rename(columns={"Datetime": "Date"})
         return self.df_inner_daily
 
     def last_completed_price(self, col='Close', i=2):   
-        return self.df_inner_daily[col].iloc[-i]
+        return float(self.df_inner_daily[col].iloc[-i])
 
     def run_polling(self, interval=900, is_background_running=False):
         def poll():
@@ -70,8 +80,8 @@ class Stock:
     
 ticker = "SPY"
 stock = Stock(ticker)
-last_price = f"{stock.last_completed_price().iloc[-1]:.2f}"
-
+last_price = f"{stock.last_completed_price():.2f}"
+print(stock.df_daily.to_string())
 if stock.cross_check() == "1":
     message = f"Found golden cross {ticker} Price is {last_price}"
     asyncio.run(send_message_to_group(message))
