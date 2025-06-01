@@ -31,7 +31,7 @@ class Stock:
 
     def fetch_stock(self):
         self.df_daily = yf.download(self.ticker, interval="1d", period="1y", auto_adjust=True)
-        self.df_inner_daily = yf.download(self.ticker, interval="30m", period="1mo", auto_adjust=True)
+        self.df_inner_daily = yf.download(self.ticker, interval="30m", period="1mo", auto_adjust=True, end="2025-05-30")
 
         # fixing cols
         self.df_daily.columns = self.df_daily.columns.droplevel(1)
@@ -81,7 +81,7 @@ class Stock:
 ticker = "SPY"
 stock = Stock(ticker)
 last_price = f"{stock.last_completed_price():.2f}"
-print(stock.df_daily.to_string())
+print(stock.df_inner_daily.to_string())
 if stock.cross_check() == "1":
     message = f"Found golden cross {ticker} Price is {last_price}"
     asyncio.run(send_message_to_group(message))
