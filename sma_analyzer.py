@@ -17,7 +17,7 @@ def get_percentage_above_sma(tickers = TICKERS):
         float: Percentage of stocks above their 20-day SMA (rounded to 1 decimal)
     """
     # Download data
-    df = yf.download(tickers, period="1mo", interval="1d", group_by='ticker', progress=False)
+    df = yf.download(tickers, period="1mo", interval="1d", group_by='ticker', progress=False, threads=False)
     
     # Process data
     if not df.empty and 'Close' in df.columns.levels[1]:
@@ -32,8 +32,19 @@ def get_percentage_above_sma(tickers = TICKERS):
         return round(percentage, 2)
     return 0.0
 
-percentage_above = get_percentage_above_sma()
-message = f"{percentage_above}% of stocks are above their 20-day SMA"
-asyncio.run(send_message_to_group(message))
+# percentage_above = get_percentage_above_sma()
+# message = f"{percentage_above}% of stocks are above their 20-day SMA"
+# asyncio.run(send_message_to_group(message))
 
 
+async def main():
+    try:
+        percentage = get_percentage_above_sma()
+        message = f"{percentage}% of stocks above 20-day SMA"
+        await send_message_to_group(message)
+    except Exception as e:
+        print(f"Error in main: {e}")
+        raise
+
+if __name__ == "__main__":
+    asyncio.run(main())

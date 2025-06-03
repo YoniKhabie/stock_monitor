@@ -6,6 +6,7 @@ import time
 
 import yfinance as yf
 
+from github_logger import log_notice, log_warning
 from indicators import add_resistance, add_support, sma
 from telegram_bot import send_message_to_group
 
@@ -81,11 +82,13 @@ class Stock:
 ticker = "SPY"
 stock = Stock(ticker)
 last_price = f"{stock.last_completed_price():.2f}"
-print(stock.df_inner_daily.to_string())
+message = "No cross found"
+# print(stock.df_inner_daily.to_string())
 if stock.cross_check() == "1":
     message = f"Found golden cross {ticker} Price is {last_price}"
     asyncio.run(send_message_to_group(message))
-
-if stock.cross_check() == "-1":
+elif stock.cross_check() == "-1":
     message = f"Found death cross {ticker} Price is {last_price}"
     asyncio.run(send_message_to_group(message))
+else:
+    log_warning(message)

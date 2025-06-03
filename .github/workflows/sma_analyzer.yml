@@ -2,7 +2,7 @@ name: Run SMA Analyzer
 
 on:
   schedule:
-    - cron: '0 * * * 1-5'
+    - cron: '30 13-20 * * 1-5'
   workflow_dispatch:
 
 jobs:
@@ -24,6 +24,6 @@ jobs:
 
       - name: Run SMA Analyzer
         env:
-          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          GROUP_CHAT_ID: ${{ secrets.GROUP_CHAT_ID }}
+          BOT_TOKEN: ${{ env.BOT_TOKEN }}
+          GROUP_CHAT_ID: ${{ env.GROUP_CHAT_ID }}
         run: python sma_analyzer.py

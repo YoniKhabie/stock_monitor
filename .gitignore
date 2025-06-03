@@ -9,6 +9,7 @@ __pycache__/
 
 # Environment files
 .env
+.secrets
 .venv/
 env/
 venv/
@@ -18,8 +19,6 @@ venv/
 *.sqlite
 
 # Backup files
-main_2.py
-main_3.py
 test.py
 *.bak
 

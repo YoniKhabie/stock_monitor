@@ -6,17 +6,23 @@ from telegram import Bot
 from telegram.error import TelegramError
 
 load_dotenv()
-BASE_URL = "https://api.telegram.org/bot"
-BOT_TOKEN = os.getenv("BOT_TOKEN")
-GROUP_CHAT_ID = int(os.getenv("GROUP_CHAT_ID"))
 
 async def send_message_to_group(text):
-    bot = Bot(token=BOT_TOKEN)
     try:
-        bot.send_message(chat_id=GROUP_CHAT_ID, text=text, disable_notification=False)
+        BOT_TOKEN = os.getenv("BOT_TOKEN")
+        GROUP_CHAT_ID = os.getenv("GROUP_CHAT_ID")
+        # print(f"BOT_TOKEN exists: {bool(BOT_TOKEN)}")
+        # print(f"GROUP_CHAT_ID exists: {bool(GROUP_CHAT_ID)}")
+        if not BOT_TOKEN or not GROUP_CHAT_ID:
+            raise ValueError("Missing Telegram credentials in environment variables")
+            
+        bot = Bot(token=BOT_TOKEN)
+        await bot.send_message(
+            chat_id=int(GROUP_CHAT_ID),
+            text=text,
+            disable_notification=False
+        )
         print("Message sent successfully.")
-    except TelegramError as e:
+    except Exception as e:
         print(f"Failed to send message: {e}")
-
-if __name__ == "__main__":
-    asyncio.run(send_message_to_group("Hello group! This is a secure message from the bot."))
+        raise  # Re-raise to fail the workflow
