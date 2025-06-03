@@ -32,7 +32,15 @@ def get_percentage_above_sma(tickers = TICKERS):
         return round(percentage, 2)
     return 0.0
 
-percentage_above = get_percentage_above_sma()
-message = f"{percentage_above}% of stocks are above their 20-day SMA"
-asyncio.run(send_message_to_group(message))
+# percentage_above = get_percentage_above_sma()
+# message = f"{percentage_above}% of stocks are above their 20-day SMA"
+# asyncio.run(send_message_to_group(message))
 
+async def main():
+    try:
+        percentage_above = get_percentage_above_sma()
+        message = f"{percentage_above}% of stocks are above their 20-day SMA"
+        await send_message_to_group(message)
+    except Exception as e:
+        print(f"Error sending message: {e}")
+        raise  # This will make the GitHub Action fail visibly
