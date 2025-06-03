@@ -2,7 +2,7 @@ name: Run SMA Analyzer
 
 on:
   schedule:
-    - cron: '*/5 * * * 1-5'
+    - cron: '0 * * * 1-5'
   workflow_dispatch:
 
 jobs:
