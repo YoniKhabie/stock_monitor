@@ -22,8 +22,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run SMA Analyzer
+      - name: execute py script
         env:
-          BOT_TOKEN: ${{ env.BOT_TOKEN }}
-          GROUP_CHAT_ID: ${{ env.GROUP_CHAT_ID }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          GROUP_CHAT_ID: ${{ secrets.GROUP_CHAT_ID }}
         run: python sma_analyzer.py
