@@ -3,7 +3,7 @@ import asyncio
 import yfinance as yf
 
 from constants import TICKERS
-from telegram_bot import send_message_to_group
+from telegram_bot import MyBot
 
 
 def get_percentage_above_sma(tickers = TICKERS):
@@ -38,10 +38,11 @@ def get_percentage_above_sma(tickers = TICKERS):
 
 
 async def main():
+    bot = MyBot()
     try:
         percentage = get_percentage_above_sma()
         message = f"{percentage}% of stocks above 20-day SMA"
-        await send_message_to_group(message)
+        await bot.send_message_to_group(message)
     except Exception as e:
         print(f"Error in main: {e}")
         raise
