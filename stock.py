@@ -6,7 +6,7 @@ import time
 
 import yfinance as yf
 
-from indicators import add_resistance, add_support, bollinger, sma
+from indicators import add_resistance, add_support, sma
 from telegram_bot import send_message_to_group
 
 

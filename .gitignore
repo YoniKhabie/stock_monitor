@@ -20,6 +20,7 @@ venv/
 # Backup files
 main_2.py
 main_3.py
+test.py
 *.bak
 
 # Finnhub API folder
