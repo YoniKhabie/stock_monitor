@@ -7,3 +7,4 @@ python-dotenv==1.1.0
 matplotlib>=3.7.1
 mplfinance>=0.12.10b0
 Pillow>=9.4.0
+pytz==2023.3
