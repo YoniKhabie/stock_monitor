@@ -32,10 +32,6 @@ def get_percentage_above_sma(tickers = TICKERS):
         return round(percentage, 2)
     return 0.0
 
-# percentage_above = get_percentage_above_sma()
-# message = f"{percentage_above}% of stocks are above their 20-day SMA"
-# asyncio.run(send_message_to_group(message))
-
 
 async def main():
     bot = MyBot()

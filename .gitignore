@@ -10,6 +10,7 @@ __pycache__/
 # Environment files
 .env
 .secrets
+note.txt
 .venv/
 env/
 venv/
@@ -24,6 +25,9 @@ test.py
 
 # Finnhub API folder
 finnhub/
+my_backtesting/
+legacy/
+
 
 # Distribution / packaging
 .Python

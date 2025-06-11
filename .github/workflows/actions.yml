@@ -1,8 +1,8 @@
-name: run stock.py
+name: run main.py
 
 on:
   schedule:
-    - cron: '*/30 13-20 * * 1-5'
+    - cron: '*/50 13-20 * * 1-5'
   workflow_dispatch:
 
 jobs:
@@ -27,4 +27,4 @@ jobs:
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           GROUP_CHAT_ID: ${{ secrets.GROUP_CHAT_ID }}
-        run: python stock.py
+        run: python main.py

@@ -1,7 +1,9 @@
 import os
+from datetime import datetime
+from io import BytesIO
 
 from dotenv import load_dotenv
-from telegram import Bot
+from telegram import Bot, InputFile
 
 load_dotenv()
 
@@ -23,4 +25,17 @@ class MyBot:
             print("Message sent successfully.")
         except Exception as e:
             print(f"Failed to send message: {e}")
+            raise
+
+    async def send_img_to_group(self, image_buf: BytesIO, caption: str = ""):
+        try:
+            await self.bot.send_photo(
+                chat_id=int(self.GROUP_CHAT_ID),
+                photo=image_buf,
+                caption=caption,
+                disable_notification=False
+            )
+            print("High-quality image sent successfully.")
+        except Exception as e:
+            print(f"Failed to send image: {e}")
             raise

@@ -1,4 +1,4 @@
-name: Run SMA Analyzer
+name: Run sma_analyzer.py
 
 on:
   schedule:
