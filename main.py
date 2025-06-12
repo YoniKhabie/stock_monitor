@@ -4,6 +4,7 @@ from datetime import datetime
 
 import pytz
 
+from sma_analyzer import get_total_stocks_sma
 from Stock.data import StockData
 from Stock.img_generator import ImgGenerator
 from telegram_bot import MyBot
@@ -41,6 +42,8 @@ async def main():
         message = f"{current_time}\n" + "\n".join(
             f"{key}: {format_number(value)}" for key, value in sorted_items
         )
+        # TODO uncomment when the mini pc will run the code
+        # message+=f"\n{get_total_stocks_sma()}"
 
         img = ImgGenerator.run(analyzer)
         await bot.send_img_to_group(img, caption=message)

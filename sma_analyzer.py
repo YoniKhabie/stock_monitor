@@ -6,7 +6,7 @@ from constants import TICKERS
 from telegram_bot import MyBot
 
 
-def get_percentage_above_sma(tickers = TICKERS):
+def get_total_stocks_sma(tickers = TICKERS):
     """
     Calculate the percentage of stocks trading above their 20-day SMA
     
@@ -29,15 +29,14 @@ def get_percentage_above_sma(tickers = TICKERS):
         above_sma = (closes.iloc[-1] > smas.iloc[-1]).sum()
         percentage = (above_sma / valid_pairs.sum()) * 100 if valid_pairs.sum() > 0 else 0
         
-        return round(percentage, 2)
-    return 0.0
-
+        percentage = round(percentage, 2)
+        return f"S5TW 20 SMA: {percentage}%"
+    return f"S5TW 20 SMA: Error"
 
 async def main():
     bot = MyBot()
     try:
-        percentage = get_percentage_above_sma()
-        message = f"{percentage}% of stocks above 20-day SMA"
+        message = get_total_stocks_sma()
         await bot.send_message_to_group(message)
     except Exception as e:
         print(f"Error in main: {e}")

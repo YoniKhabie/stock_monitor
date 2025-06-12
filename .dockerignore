@@ -1,0 +1,38 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# IDE files
+.vscode/
+.idea/
+
+# Environment and secrets
+.env
+.secrets
+note.txt
+
+# Python virtual environments
+.venv/
+env/
+venv/
+
+# Logs and databases
+*.log
+*.sqlite
+
+# Backup and test files
+test.py
+*.bak
+
+# Finnhub API and legacy folders
+finnhub/
+my_backtesting/
+legacy/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+*.egg-info/

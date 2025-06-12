@@ -5,6 +5,7 @@ from typing import Optional
 import matplotlib.pyplot as plt
 import mplfinance as mpf
 from PIL import Image
+
 from Stock.data import StockData
 
 
@@ -17,7 +18,6 @@ class StockChart:
     def create_base_chart(self) -> None:
         """Create the base candlestick chart with moving averages"""
         add_plots = [
-            mpf.make_addplot(self.analyzer.data['SMA_1'], color='blue', width=0.2),
             mpf.make_addplot(self.analyzer.data['SMA_20'], color='green', width=1.0),
             mpf.make_addplot(self.analyzer.data['SMA_94'], color='red', width=1.0)
         ]
@@ -146,7 +146,6 @@ class StockChart:
         current_price = self.analyzer.data['Close'].iloc[-1]
         
         sma_labels = [
-            (self.analyzer.data['SMA_1'].iloc[-1], '1 SMA', 'blue'),
             (self.analyzer.data['SMA_20'].iloc[-1], '20 SMA', 'green'),
             (self.analyzer.data['SMA_94'].iloc[-1], '94 SMA', 'red'),
             (current_price, 'Price', 'black')
