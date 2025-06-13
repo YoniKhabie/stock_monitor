@@ -1,9 +1,6 @@
-import asyncio
-
 import yfinance as yf
-
 from constants import TICKERS
-from telegram_bot import MyBot
+
 
 
 def get_total_stocks_sma(tickers = TICKERS):
@@ -33,14 +30,14 @@ def get_total_stocks_sma(tickers = TICKERS):
         return f"S5TW 20 SMA: {percentage}%"
     return f"S5TW 20 SMA: Error"
 
-async def main():
-    bot = MyBot()
-    try:
-        message = get_total_stocks_sma()
-        await bot.send_message_to_group(message)
-    except Exception as e:
-        print(f"Error in main: {e}")
-        raise
+# async def main():
+#     bot = MyBot()
+#     try:
+#         message = get_total_stocks_sma()
+#         await bot.send_message_to_group(message)
+#     except Exception as e:
+#         print(f"Error in main: {e}")
+#         raise
 
-if __name__ == "__main__":
-    asyncio.run(main())
+# if __name__ == "__main__":
+#     asyncio.run(main())
