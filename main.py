@@ -42,8 +42,8 @@ async def main():
         message = f"{current_time}\n" + "\n".join(
             f"{key}: {format_number(value)}" for key, value in sorted_items
         )
-
         message+=f"\n{get_total_stocks_sma()}"
+
 
         img = ImgGenerator.run(analyzer)
         await bot.send_img_to_group(img, caption=message)

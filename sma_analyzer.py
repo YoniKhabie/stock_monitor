@@ -1,6 +1,6 @@
 import yfinance as yf
-from constants import TICKERS
 
+from constants import TICKERS
 
 
 def get_total_stocks_sma(tickers = TICKERS):
@@ -14,7 +14,7 @@ def get_total_stocks_sma(tickers = TICKERS):
         float: Percentage of stocks above their 20-day SMA (rounded to 1 decimal)
     """
     # Download data
-    df = yf.download(tickers, period="1mo", interval="1d", group_by='ticker', progress=False, threads=False)
+    df = yf.download(tickers, period="1mo", interval="1d", group_by='ticker', progress=True, threads=4, timeout=10)
     
     # Process data
     if not df.empty and 'Close' in df.columns.levels[1]:
@@ -29,15 +29,3 @@ def get_total_stocks_sma(tickers = TICKERS):
         percentage = round(percentage, 2)
         return f"S5TW 20 SMA: {percentage}%"
     return f"S5TW 20 SMA: Error"
-
-# async def main():
-#     bot = MyBot()
-#     try:
-#         message = get_total_stocks_sma()
-#         await bot.send_message_to_group(message)
-#     except Exception as e:
-#         print(f"Error in main: {e}")
-#         raise
-
-# if __name__ == "__main__":
-#     asyncio.run(main())
