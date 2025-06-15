@@ -14,7 +14,10 @@ def message_generator(analyzer: StockData):
     close = round(analyzer.get_last("Close"), 2)
     key_levels = [round(p, 2) for p in analyzer.get_surrounding_key_levels()]
     support, resistance = key_levels[0], key_levels[1]
-    
+    gaps_list = analyzer.get_open_gaps()
+    gaps_list[0].price_level
+    gaps_list = [round(gap.price_level,2) for gap in gaps_list]
+    # add gaps to data
     data = {
         "Resistance": resistance,
         "Close": close,
@@ -22,6 +25,8 @@ def message_generator(analyzer: StockData):
         "SMA20": sma_fast,
         "SMA94": sma_slow
     }
+    for index, gap in enumerate(gaps_list):
+        data[f"Gap {index+1}"] = gap
 
     # Inject percentages
     data = precentage_to_close(data)
@@ -36,5 +41,6 @@ def message_generator(analyzer: StockData):
         f"{key}: {value}" for key, value in sorted_items
     )
     message += f"\n{get_total_stocks_sma()}"
+    # print(message)
 
     return message

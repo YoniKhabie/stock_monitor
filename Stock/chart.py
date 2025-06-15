@@ -83,15 +83,26 @@ class StockChart:
             
             # Mark unfilled gaps with reference lines
             if not gap.filled:
-                self.ax.hlines(
-                    y=gap.ref_price,
-                    xmin=gap.index - 0.5,
-                    xmax=gap.index + 0.5,
-                    colors='lightcoral' if gap.gap_type == 'down' else 'green',
-                    linestyles='dashed',
-                    alpha=0.7,
-                    linewidth=1.2
-                )
+                self.ax.hlines(  
+                    y=gap.ref_price,  
+                    xmin=gap.index - 0.5,  
+                    xmax=len(self.analyzer.data) + 10,  
+                    color='red',  
+                    linestyle='--',  
+                    alpha=0.5,  
+                    linewidth=1.5  
+                )  
+
+                # Add label to the open gap level in red  
+                self.ax.text(  
+                    gap.index - 0.5,  
+                    gap.ref_price,  
+                    f'{gap.ref_price:.2f}',  
+                    ha='right', va='center',  
+                    color='red',  
+                    fontsize=8,  
+                    bbox=dict(facecolor='none', alpha=0, edgecolor='none')  
+                )  
 
     def plot_key_levels(self) -> None:
         """Draw significant price levels on chart"""
