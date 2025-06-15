@@ -1,34 +1,34 @@
 from typing import Dict, List
 
 
-def format_number(num):
+def format_number(num) -> str:
     if isinstance(num, (int, float)):
         return f"{num:,.2f}"
-    return num 
+    return str(num) 
 
-def precentage_to_close(data:Dict) -> List[str]:
+def precentage_to_close(data: Dict[str, float]) -> Dict[str, str]:
     close = data["Close"]
-    res = []
-    for key, value in data.items():
-        if(key == "Close" or value == None):
+    for key, value in list(data.items()):
+        if key == "Close" or value is None:
             continue
-        val = ((value / close) -1) * 100
-        val = round(abs(val),2)
-        # val = val - 1 if val > 1 else val
-        res.append(f"{key}: {val}%")
-    return res
+        percentage = ((value / close) - 1) * 100
+        percentage = round(abs(percentage), 2)
+        data[key] = f"{value} ({percentage}%)"
+    # Optionally format Close as well:
+    data["Close"] = f"{close}"
+    return data
 
 # def main():
 # # TESTING
 #     data = {
-#         "Resistance": 6070,
+#         "Resistance": 6070.999,
 #         "Close": 5976,
 #         "Support":5948,
 #         "SMA20": 5944,
 #         "SMA94": 5945
 #     }
-#     res = precentage_to_close(data)
-#     print(res)
+    
+#     precentage_to_close(data)
 
 # if __name__ == "__main__":
 #     main()
